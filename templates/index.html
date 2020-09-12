@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+
+<!--    <script src="https://unpkg.com/@twetch/sdk@0.2.2/dist/twetch.min.js"></script>-->
+
+<div class="columns">
+
+
+
+        <div class="column"></div>
+        <div class="column">
+            <div class="has-text-centered content">
+                <h1>TwetchVote</h1>
+                
+            </div>
+            {% for twetch in twetches %}
+            <article class="media content">
+
+
+
+                    <figure class="media-left" style="margin-bottom: 0px; margin-top: 4px; margin-right: 16px;">
+
+                        {% if twetch.icon_url %}
+                            <p class="image is-64x64">
+                            <img src="{{ twetch.icon_url }}" style="border-radius: 50%">
+                            </p>
+                        {% else %}
+                            <p class="image is-64x64">
+                            <img src="https://i.imgur.com/eJ5zJ4m.png" style="border-radius: 50%">
+                            </p>
+                        {% endif %}
+
+                    </figure>
+
+                    <figure class="media-left" style="margin-bottom: 0px; margin-top: 0px; margin-left: 0px; margin-right: 16px">
+                        <a onclick="vote('{{ twetch.txid }}', 'upvote', '{{ twetch.mb_user_id }}')" id="upvote-submit" name="vote-type" value="upvote" >
+                            <span class="icon is-small">
+                                <i class="fas fa-chevron-up"></i>
+                            </span>
+                        </a>
+                        <br>
+                        <span id="score-{{ twetch.txid }}">{{ twetch.score }}</span>
+                        <br>
+                        <a onclick="vote('{{ twetch.txid }}', 'downvote', '{{ twetch.mb_user_id }}')" id="downvote-submit" name="vote-type" value="downvote">
+                            <span class="icon is-small">
+                                <i class="fas fa-chevron-down"></i>
+                            </span>
+                        </a>
+
+
+                </figure>
+                
+
+                
+                <div class="media-content">
+
+                    <a href="https://twetch.app/u/{{ twetch.twetch_user_id }}">
+                    <strong>{{ twetch.twetch_username }}</strong> <small>@{{ twetch.twetch_user_id }}</small>
+                    </a>
+
+
+                    <span class="render-datetime is-pulled-right" datetime="{{ twetch.created_at }}"></span>
+
+
+                    <div class="content">
+                        {% if twetch.filepath %}
+                        {% if twetch.content_text %}
+                            <p class="post-content">
+                                {{ twetch.content_text }}
+                            </p>
+
+                        {% endif %}
+                            <p class="image is-512x512">
+                                <img src="https://cimg.twetch.com/{{ twetch.filepath }}" style="max-height: 512px; width: auto; margin-left: auto; margin-right: auto; margin-top: 20px;" >
+                            </p>
+                        {% else %}
+                            <p class="post-content">
+                                {{ twetch.content_text }}
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        <div class="column"></div>
+
+        <div class="modal" id="welcome-dialog">
+          <div class="modal-background"></div>
+          <div class="modal-card">
+            <header class="modal-card-head">
+              <p class="modal-card-title">TwetchVote</p>
+            </header>
+            <section class="modal-card-body">
+                <p>This site uses Invisible Money Button. Each vote costs 6 cents. The top 50 voted posts are visible for 24 hours.</p>
+            </section>
+            <footer class="modal-card-foot">
+              <button class="button" onclick="document.getElementById('welcome-dialog').setAttribute('class', 'modal');">Ok</button>
+            </footer>
+          </div>
+        </div>
+
+        <div class="modal" id="vote-dialog">
+          <div class="modal-background"></div>
+          <div class="modal-card">
+            <header class="modal-card-head">
+              <p class="modal-card-title">TwetchVote</p>
+            </header>
+            <section class="modal-card-body">
+                <div class="" id="loading-circle" style="width: 32px; height: 32px;"></div><p id="vote-dialog-text"></p>
+            </section>
+            <footer class="modal-card-foot" id="vote-dialog-footer">
+
+            </footer>
+          </div>
+        </div>
+
+
+</div>
+{% endblock %}
